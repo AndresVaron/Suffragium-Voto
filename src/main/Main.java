@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 import interfaz.Principal;
 
-public class Main {
+public class Main extends Thread {
 
 	private byte[] llave;
 	private String url;
@@ -26,7 +26,7 @@ public class Main {
 
 	}
 
-	public synchronized void setKey(String key) {
+	public void setKey(String key) {
 		llave = (key).getBytes();
 	}
 
@@ -34,7 +34,7 @@ public class Main {
 		this.url = url;
 	}
 
-	public synchronized void iniciar() throws Exception {
+	public void run() {
 		try {
 			con = new Socket(url.split(":")[0], Integer.parseInt(url.split(":")[1]));
 			out = new PrintWriter(con.getOutputStream(), true);
@@ -43,7 +43,7 @@ public class Main {
 			String m = in.readLine();
 			String info = "CONFIRMACION:" + encriptar("" + con.getPort());
 			if (!m.equals(info)) {
-				throw new Exception("Falla en la confirmacion de los credenciales.");
+				interfaz.error("Falla en la confirmacion de los credenciales.");
 			}
 			String msg;
 			try {
@@ -51,13 +51,14 @@ public class Main {
 				while (msg != "FIN") {
 					if (msg.startsWith("HABILITAR:")) {
 						String ced = desEncriptar(msg.replaceFirst("HABILITAR:", ""));
-						String voto = interfaz.votar();
+						String voto = interfaz.habilitar();
 						voto = ced + "" + voto;
 						out.println("VOTO:" + encriptar(voto));
 					}
 					msg = in.readLine();
 				}
 			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
 		} catch (UnknownHostException e) {
