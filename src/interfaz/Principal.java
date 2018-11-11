@@ -207,7 +207,7 @@ public class Principal extends Application {
 
 		TextField claveInput = new TextField();
 		claveInput.setPromptText("Valor de la llave");
-		claveInput.setText("1234567890123456");
+		claveInput.setText("39yGJqQs9b7rMOCR");
 		claveInput.setFont(new Font(x / 80));
 		clave.getChildren().add(claveInput);
 
@@ -242,7 +242,7 @@ public class Principal extends Application {
 
 	public void iniciar() throws Exception {
 		stage.setWidth(x * 0.75);
-		stage.setHeight(y * 0.75);
+		stage.setHeight(y * 0.70);
 		stage.centerOnScreen();
 		BorderPane borderEspera = new BorderPane();
 
@@ -292,11 +292,15 @@ public class Principal extends Application {
 		BorderPane.setAlignment(titulo, Pos.CENTER);
 
 		// Candidatos
-		GridPane grid = new GridPane();
 		int id = 0;
 		BufferedReader in = new BufferedReader(new FileReader(new File("./data/InfoCandidatos.txt")));
 		String linea = in.readLine();
+		VBox vertical = new VBox();
+		vertical.setPadding(new Insets(y/30,x/60,y/80,x/40));
+		vertical.setSpacing(y/20);
 		for (int i = 0; i < 2; i++) {
+			HBox horizontal = new HBox();
+			horizontal.setSpacing(x/50);
 			for (int j = 0; j < 4; j++) {
 				String[] d = linea.split(";");
 				linea = in.readLine();
@@ -330,13 +334,13 @@ public class Principal extends Application {
 				
 				ImageView image = new ImageView(new Image(new FileInputStream("./data/" + (id + 1) + ".jpg")));
 				
-				image.setFitHeight(180);
-				image.setFitWidth(180);
+				image.setFitHeight(y/4.5);
+				image.setFitWidth(x/4.5);
 				image.setPreserveRatio(true);
 				b.setGraphic(image);
-				ImageView infoIcon = new ImageView(new Image(new FileInputStream("./data/info.jpg")));
-				infoIcon.setFitHeight(15);
-				infoIcon.setFitWidth(15);
+				ImageView infoIcon = new ImageView(new Image(new FileInputStream("./data/info.png")));
+				infoIcon.setFitHeight(x/50);
+				infoIcon.setFitWidth(x/50);
 				info.setGraphic(infoIcon);
 				info.setOnAction(e -> {
 					alert.showAndWait();
@@ -353,15 +357,12 @@ public class Principal extends Application {
 				GridPane.setConstraints(info, 1, 0);
 				GridPane.setConstraints(gr, j, i);
 				gr.getChildren().addAll(b, info);
-				grid.getChildren().add(gr);
+				horizontal.getChildren().add(gr);
 				id++;
 			}
+			vertical.getChildren().add(horizontal);
 		}
 		in.close();
-
-		grid.setPadding(new Insets(10, 10, 10, 10));
-		grid.setVgap(12);
-		grid.setHgap(15);
 
 		// Fondo
 		Image fondo = new Image(
@@ -370,7 +371,7 @@ public class Principal extends Application {
 		Background background1 = new Background(new BackgroundImage(fondo, BackgroundRepeat.NO_REPEAT,
 				BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, bacSize));
 		borderVotos.setBackground(background1);
-		borderVotos.setCenter(grid);
+		borderVotos.setCenter(vertical);
 		votos = new Scene(borderVotos);
 
 	}
