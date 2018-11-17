@@ -191,7 +191,7 @@ public class Principal extends Application {
 
 		TextField direccionInput = new TextField();
 		direccionInput.setPromptText("Direccion del jurado");
-		direccionInput.setText("172.24.99.21:8085");
+		direccionInput.setText(main.darDireccion());
 		direccionInput.setFont(new Font(x / 80));
 		direc.getChildren().add(direccionInput);
 
@@ -207,7 +207,7 @@ public class Principal extends Application {
 
 		TextField claveInput = new TextField();
 		claveInput.setPromptText("Valor de la llave");
-		claveInput.setText("39yGJqQs9b7rMOCR");
+		claveInput.setText(main.darLlave());
 		claveInput.setFont(new Font(x / 80));
 		clave.getChildren().add(claveInput);
 

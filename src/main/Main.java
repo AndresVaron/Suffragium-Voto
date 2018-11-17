@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.HttpURLConnection;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 import interfaz.Principal;
@@ -20,8 +22,23 @@ public class Main extends Thread {
 	private Socket con;
 
 	public Main(Principal interfaz) {
-		llave = null;
-		url = null;
+		String url = "http://157.253.238.75:80/Suffragium/api/jurado";
+		URL obj;
+		try {
+			obj = new URL(url);
+			HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+			con.setRequestMethod("GET");
+			con.setRequestProperty("User-Agent", "Mozilla/5.0");
+			con.getResponseMessage();
+			
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			this.url = in.readLine();
+			this.llave = in.readLine().getBytes();
+			in.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		this.interfaz = interfaz;
 
 	}
@@ -74,5 +91,13 @@ public class Main extends Thread {
 
 	public String desEncriptar(String msg) {
 		return msg;
+	}
+
+	public String darDireccion() {
+		return url;
+	}
+
+	public String darLlave() {
+		return new String(llave);
 	}
 }
