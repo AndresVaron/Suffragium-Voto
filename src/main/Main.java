@@ -22,7 +22,7 @@ public class Main extends Thread {
 	private Socket con;
 
 	public Main(Principal interfaz) {
-		String url = "http://157.253.238.75:80/Suffragium/api/jurado";
+		String url = "http://157.253.238.75:8080/Suffragium/api/jurado";
 		URL obj;
 		try {
 			obj = new URL(url);
